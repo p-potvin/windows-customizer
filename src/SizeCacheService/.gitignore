@@ -1,0 +1,3 @@
+# Ignore local configuration and cache files
+config.json
+sizecache.json

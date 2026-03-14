@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://schemas.microsoft.com/windows/2006/propertyschema"
+        schemaVersion="1.0">
+  <propertyDescriptionList publisher="WindowsCustomizer" canonicalName="WindowsCustomizer.FolderSize">
+    <propertyDescription name="FolderSize" formatID="{22654A2D-A26F-4394-859A-60D834048A05}" propID="2">
+      <description>The cached size of a folder's contents.</description>
+      <searchInfo inInvertedIndex="false" isColumn="true"/>
+      <typeInfo type="UInt64" dbType="UI8" sortable="true"/>
+      <displayInfo label="Folder Size" alignment="RIGHT" displayType="FileSize"/>
+      <stringFormat/>
+    </propertyDescription>
+  </propertyDescriptionList>
+</schema>

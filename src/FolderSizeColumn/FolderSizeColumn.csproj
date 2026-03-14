@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <EnableComHosting>true</EnableComHosting>
+    <UseWindowsForms>true</UseWindowsForms> <!-- Required for some SharpShell utilities -->
+    <AssemblyTitle>FolderSizeColumn</AssemblyTitle>
+    <Product>FolderSizeColumn</Product>
+    <Copyright>Copyright © 2026</Copyright>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <OutputPath>bin\$(Configuration)\</OutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="SharpShell" Version="2.7.2" />
+    <PackageReference Include="Microsoft.Windows.Compatibility" Version="8.0.4" />
+  </ItemGroup>
+
+</Project>

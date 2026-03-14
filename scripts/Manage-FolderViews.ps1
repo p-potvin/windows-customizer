@@ -1,43 +1,104 @@
 <#
 .SYNOPSIS
-A script to manage Windows Explorer folder view settings.
+A script to manage Windows Explorer folder view settings, both globally and for specific folders.
 
 .DESCRIPTION
-This script provides functions to save, restore, and reset folder view preferences
-stored in the Windows Registry.
+This script provides functions to back up and restore all folder views globally.
+It also integrates with the 'view-manager.exe' helper application to save, apply,
+and manage persistent view settings for individual folders.
 
 .NOTES
 Author: Gemini
 Date: 14/03/2026
-
-Functions:
-- Save-FolderViews
-- Restore-FolderViews
-- Reset-FolderViews
 #>
 
-function Save-FolderViews {
-    <#
-    .SYNOPSIS
-    Saves the current user's folder view settings to a specified directory.
-    .DESCRIPTION
-    Exports multiple registry keys related to folder views to .reg files.
-    .PARAMETER Path
-    The directory path where the backup .reg files will be saved.
-    .EXAMPLE
-    Save-FolderViews -Path "C:\Backups\FolderViewSettings"
-    #>
+# --- Configuration ---
+# The script expects the compiled helper executable to be in this location.
+# Run the build as described in src/ViewManager/BUILD.md
+$viewManagerPath = Join-Path $PSScriptRoot "..\src\ViewManager\bin\Release\net8.0-windows\view-manager.exe"
+
+# --- Per-Folder View Management (Requires view-manager.exe) ---
+
+function Save-PersistentFolderView {
+    [CmdletBinding()]
     param(
         [Parameter(Mandatory=$true)]
-        [string]$Path
+        [string]$Path,
+        [Parameter(Mandatory=$true)]
+        [string]$Name
     )
-
-    if (-not (Test-Path $Path)) {
-        New-Item -Path $Path -ItemType Directory | Out-Null
-        Write-Host "Created backup directory: $Path"
+    
+    if (-not (Test-Path $viewManagerPath)) {
+        Write-Error "View Manager executable not found at '$viewManagerPath'. Please build it first."
+        return
     }
 
-    Write-Host "Saving folder view settings to $Path..."
+    Write-Host "Saving view for '$Path' as '$Name'..."
+    & $viewManagerPath save --path $Path --name $Name
+}
+
+function Set-PersistentFolderView {
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory=$true)]
+        [string]$Path,
+        [Parameter(Mandatory=$true)]
+        [string]$Name
+    )
+
+    if (-not (Test-Path $viewManagerPath)) {
+        Write-Error "View Manager executable not found at '$viewManagerPath'. Please build it first."
+        return
+    }
+
+    Write-Host "Applying view '$Name' to '$Path'..."
+    & $viewManagerPath apply --path $Path --name $Name
+}
+
+function Get-PersistentFolderView {
+    [CmdletBinding()]
+    param()
+
+    if (-not (Test-Path $viewManagerPath)) {
+        Write-Error "View Manager executable not found at '$viewManagerPath'. Please build it first."
+        return
+    }
+
+    & $viewManagerPath list
+}
+
+function Remove-PersistentFolderView {
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory=$true)]
+        [string]$Name
+    )
+
+    if (-not (Test-Path $viewManagerPath)) {
+        Write-Error "View Manager executable not found at '$viewManagerPath'. Please build it first."
+        return
+    }
+    
+    Write-Host "Deleting view '$Name'..."
+    & $viewManagerPath delete --name $Name
+}
+
+
+# --- Global View Management ---
+
+function Backup-AllFolderViews {
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory=$true)]
+        [string]$BackupPath
+    )
+
+    if (-not (Test-Path $BackupPath)) {
+        New-Item -Path $BackupPath -ItemType Directory | Out-Null
+        Write-Host "Created backup directory: $BackupPath"
+    }
+
+    Write-Host "Saving all folder view settings to $BackupPath..."
 
     $regKeysToSave = @(
         "HKCU\Software\Classes\Local Settings\Software\Microsoft\Windows\Shell\BagMRU",
@@ -48,7 +109,7 @@ function Save-FolderViews {
 
     foreach ($key in $regKeysToSave) {
         $fileName = ($key -replace ':', '_') -replace '\\', '_'
-        $filePath = Join-Path $Path "$fileName.reg"
+        $filePath = Join-Path $BackupPath "$fileName.reg"
         $regPathForExe = $key.Replace("HKCU\", "HKEY_CURRENT_USER\")
         
         Write-Host "Exporting registry key: $regPathForExe"
@@ -62,30 +123,21 @@ function Save-FolderViews {
     }
 }
 
-function Restore-FolderViews {
-    <#
-    .SYNOPSIS
-    Restores folder view settings from a specified directory.
-    .DESCRIPTION
-    Imports all .reg files from a backup directory and restarts Explorer.
-    .PARAMETER Path
-    The directory path containing the .reg backup files.
-    .EXAMPLE
-    Restore-FolderViews -Path "C:\Backups\FolderViewSettings"
-    #>
+function Restore-AllFolderViews {
+    [CmdletBinding()]
     param(
         [Parameter(Mandatory=$true)]
-        [string]$Path
+        [string]$BackupPath
     )
 
-    if (-not (Test-Path $Path)) {
-        Write-Error "Backup path '$Path' does not exist."
+    if (-not (Test-Path $BackupPath)) {
+        Write-Error "Backup path '$BackupPath' does not exist."
         return
     }
 
-    $regFiles = Get-ChildItem -Path $Path -Filter "*.reg"
+    $regFiles = Get-ChildItem -Path $BackupPath -Filter "*.reg"
     if (-not $regFiles) {
-        Write-Warning "No .reg files found in $Path to restore."
+        Write-Warning "No .reg files found in $BackupPath to restore."
         return
     }
 
@@ -99,7 +151,7 @@ function Restore-FolderViews {
     Write-Host "Stopping Explorer process..."
     Stop-Process -Name explorer -Force -ErrorAction SilentlyContinue
 
-    Write-Host "Importing registry files from $Path..."
+    Write-Host "Importing registry files from $BackupPath..."
     foreach ($file in $regFiles) {
         Write-Host "Importing $($file.Name)..."
         try {
@@ -117,17 +169,8 @@ function Restore-FolderViews {
     Write-Host "Folder view settings have been restored."
 }
 
-function Reset-FolderViews {
-    <#
-    .SYNOPSIS
-    Resets all folder views to Windows defaults.
-    .DESCRIPTION
-    This function will stop the Explorer process, delete the registry keys
-    responsible for storing folder views, and then restart Explorer. This
-    action is irreversible unless a backup has been made.
-    .EXAMPLE
-    Reset-FolderViews
-    #>
+function Reset-AllFolderViews {
+    [CmdletBinding()]
     Write-Host "This will reset all your folder views to the Windows default."
     $confirmation = Read-Host "Are you sure you want to continue? (y/n)"
 
@@ -165,13 +208,3 @@ function Reset-FolderViews {
 
     Write-Host "Folder views have been reset."
 }
-
-# --- Script Entry Point ---
-# You can call the functions directly here for testing.
-# Example:
-#
-# Save-FolderViews -Path "$([Environment]::GetFolderPath('Desktop'))\MyFolderViews"
-#
-# Restore-FolderViews -Path "$([Environment]::GetFolderPath('Desktop'))\MyFolderViews"
-#
-# Reset-FolderViews
