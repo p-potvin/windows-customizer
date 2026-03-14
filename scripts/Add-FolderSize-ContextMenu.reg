@@ -1,0 +1,16 @@
+Windows Registry Editor Version 5.00
+
+; Adds a "Calculate Folder Size" option to the context menu for directories.
+;
+; IMPORTANT: Before running this .reg file, you MUST edit the path below
+; to match the actual location of the "Get-FolderSize.ps1" script on your system.
+;
+; Replace "C:\path	o\your\scripts\Get-FolderSize.ps1" with the correct path.
+; Note that backslashes in the path must be escaped (i.e., use "" instead of "").
+
+[HKEY_CLASSES_ROOT\Directory\shell\CalculateFolderSize]
+@="Calculate Folder Size"
+"Icon"="imageres.dll,-109"
+
+[HKEY_CLASSES_ROOT\Directory\shell\CalculateFolderSize\command]
+@="powershell.exe -NoProfile -ExecutionPolicy Bypass -File \"C:\\path\\to\\your\\scripts\\Get-FolderSize.ps1\" \"%1\""
