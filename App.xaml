@@ -7,8 +7,7 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <XamlControlsResources xmlns="using:Microsoft.UI.Xaml.Controls" />
-                <!-- This is where the custom theme will be loaded -->
-                <ResourceDictionary Source="Themes/StandardTheme.xaml"/>
+                <ResourceDictionary Source="/Styles/Theme.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

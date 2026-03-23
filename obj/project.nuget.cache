@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "kyXiCYo8O8Y=",
+  "dgSpecHash": "80HZl7mJubI=",
   "success": true,
-  "projectFilePath": "C:\\Users\\Administrator\\desktop\\github repos\\projects\\windows-customizer\\WindowsCustomizer.csproj",
+  "projectFilePath": "c:\\Users\\Administrator\\Desktop\\Github Repos\\Projects\\windows-customizer\\WindowsCustomizer.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Administrator\\.nuget\\packages\\microsoft.windows.sdk.buildtools\\10.0.22621.3233\\microsoft.windows.sdk.buildtools.10.0.22621.3233.nupkg.sha512",
     "C:\\Users\\Administrator\\.nuget\\packages\\microsoft.windowsappsdk\\1.5.240311000\\microsoft.windowsappsdk.1.5.240311000.nupkg.sha512",

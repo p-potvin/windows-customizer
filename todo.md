@@ -1,14 +1,17 @@
- ## Todo  0/10 completed (Ctrl+T to toggle)
+ ## Todo  1/10 completed (Ctrl+T to toggle)
 
- #1 
+ #1 [x]
  - Project Setup and Architecture Design: Establish the foundational project structure, select the UI framework (WinUI3 or .NET
    MAUI), and design the overall architectural pattern.
  #2 
- - Bloatware Removal Module: Develop functionality to identify and remove unnecessary default Windows programs, services, and
-   startup applications.
+ - Bloatware Removal Module: Develop functionality to identify and remove unnecessary default Windows programs, services, and startup
+   applications.
+   - [x] Implement UI to list installed AppX packages with checkboxes.
+   - [ ] Implement `Remove-AppxPackage` functionality.
+   - [ ] Implement service and startup program management.
  #3 
- - Essential Program Installation Module: Enable the installation of a curated list of essential programs, particularly useful after
-   a clean Windows install.
+ - Essential Program Installation Module: Enable the installation of a curated list of essential programs, particularly useful
+   after a clean Windows install.
  #4
  - Windows Explorer Customization Module: Provide options to customize various aspects of explorer.exe, including folder/file
    visibility, context menus, and sort order.

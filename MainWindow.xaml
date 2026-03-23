@@ -2,28 +2,38 @@
     x:Class="WindowsCustomizer.MainWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:WindowsCustomizer"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
     <Grid>
-        <NavigationView x:Name="navView"
+        <NavigationView x:Name="NavView"
+                        PaneDisplayMode="Left"
                         IsBackButtonVisible="Collapsed"
-                        IsSettingsVisible="true">
+                        IsSettingsVisible="True"
+                        PaneTitle="Windows Customizer"
+                        IsPaneToggleButtonVisible="True"
+                        PaneBackground="{ThemeResource NavigationViewPaneBackground}"
+                        ItemInvoked="NavView_ItemInvoked"
+                        Loaded="NavView_Loaded">
             <NavigationView.MenuItems>
-                <NavigationViewItem Content="Home" Icon="Home" Tag="Home" />
+                <NavigationViewItem Content="Home" Tag="home" Icon="Home"/>
                 <NavigationViewItemSeparator/>
-                <NavigationViewItemHeader Content="Customization Modules"/>
-                <NavigationViewItem Content="Bloatware Removal" Icon="Delete" Tag="Bloatware" />
-                <NavigationViewItem Content="Essential Programs" Icon="Add" Tag="Essentials" />
-                <NavigationViewItem Content="Explorer" Icon="Document" Tag="Explorer" />
-                <NavigationViewItem Content="Search" Icon="Find" Tag="Search" />
-                <NavigationViewItem Content="Services" Icon="Setting" Tag="Services" />
-
+                <NavigationViewItemHeader Content="Customization"/>
+                <NavigationViewItem Content="Bloatware Removal" Tag="bloatware" Icon="Delete"/>
+                <NavigationViewItem Content="Program Installer" Tag="installer" Icon="Download"/>
+                <NavigationViewItem Content="Explorer" Tag="explorer" Icon="Folder"/>
+                <NavigationViewItem Content="Search Bar" Tag="search" Icon="Find"/>
+                <NavigationViewItem Content="Invasive Services" Tag="services" Icon="Permissions"/>
+                <NavigationViewItem Content="Defender Killswitch" Tag="defender" Icon="Shield"/>
+                <NavigationViewItemSeparator/>
+                <NavigationViewItemHeader Content="Advanced"/>
+                <NavigationViewItem Content="Custom MSC" Tag="msc" Icon="Page2"/>
+                <NavigationViewItem Content="Registry" Tag="registry" Icon="Repair"/>
+                <NavigationViewItem Content="Windhawk UI" Tag="windhawk" Icon="Brush"/>
             </NavigationView.MenuItems>
 
-            <Frame x:Name="contentFrame"/>
+            <Frame x:Name="ContentFrame" Padding="12"/>
         </NavigationView>
     </Grid>
 </Window>

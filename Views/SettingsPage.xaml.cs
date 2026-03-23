@@ -2,9 +2,9 @@ using Microsoft.UI.Xaml.Controls;
 
 namespace WindowsCustomizer.Views
 {
-    public sealed partial class HomePage : Page
+    public sealed partial class SettingsPage : Page
     {
-        public HomePage()
+        public SettingsPage()
         {
             this.InitializeComponent();
         }

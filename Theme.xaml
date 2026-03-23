@@ -1,0 +1,26 @@
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- App-wide resources -->
+    <x:Double x:Key="ContentDialogMaxWidth">500</x:Double>
+
+    <!-- Colors -->
+    <Color x:Key="SystemAccentColor">#4CC2FF</Color>
+
+    <!-- Brushes -->
+    <SolidColorBrush x:Key="AppForeground" Color="White" />
+    <SolidColorBrush x:Key="AccentColorBrush" Color="{ThemeResource SystemAccentColor}" />
+    <SolidColorBrush x:Key="NavigationViewPaneBackground" Color="#A0000000" />
+
+    <!-- NavigationView Item Brushes -->
+    <SolidColorBrush x:Key="NavigationViewItemBackground" Color="Transparent"/>
+    <SolidColorBrush x:Key="NavigationViewItemBackgroundPointerOver" Color="#19FFFFFF"/>
+    <SolidColorBrush x:Key="NavigationViewItemBackgroundPressed" Color="#0FFFFFFF"/>
+    <SolidColorBrush x:Key="NavigationViewItemBackgroundSelected" Color="#334CC2FF"/>
+    <SolidColorBrush x:Key="NavigationViewItemForeground" Color="White"/>
+    <SolidColorBrush x:Key="NavigationViewItemForegroundPointerOver" Color="White"/>
+    <SolidColorBrush x:Key="NavigationViewItemForegroundPressed" Color="White"/>
+    <SolidColorBrush x:Key="NavigationViewItemForegroundSelected" Color="{ThemeResource SystemAccentColor}"/>
+
+</ResourceDictionary>
