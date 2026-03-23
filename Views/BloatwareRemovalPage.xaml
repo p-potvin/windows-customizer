@@ -64,7 +64,11 @@
         <ProgressRing Grid.Row="1" IsActive="{x:Bind ViewModel.IsLoading, Mode=OneWay}" Width="50" Height="50"
                       HorizontalAlignment="Center" VerticalAlignment="Center" />
 
-        <Button Grid.Row="2" Content="Uninstall Selected" HorizontalAlignment="Right" Margin="0,12,0,0"
+        <Button Grid.Row="2"
+                Content="Uninstall Selected"
+                HorizontalAlignment="Right"
+                Margin="0,12,0,0"
+                Command="{x:Bind ViewModel.UninstallSelectedCommand}"
                 Style="{ThemeResource AccentButtonStyle}" />
     </Grid>
 </Page>

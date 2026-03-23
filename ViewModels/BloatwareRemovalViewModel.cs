@@ -1,6 +1,7 @@
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using WindowsCustomizer.Common;
 using WindowsCustomizer.Models;
 using WindowsCustomizer.Services;
@@ -10,6 +11,7 @@ namespace WindowsCustomizer.ViewModels;
 public class BloatwareRemovalViewModel : ObservableObject
 {
     private bool _isLoading;
+
     public bool IsLoading
     {
         get => _isLoading;
@@ -17,6 +19,7 @@ public class BloatwareRemovalViewModel : ObservableObject
     }
 
     private bool? _isAllSelected = false;
+
     public bool? IsAllSelected
     {
         get => _isAllSelected;
@@ -29,7 +32,13 @@ public class BloatwareRemovalViewModel : ObservableObject
         }
     }
 
+    public ICommand UninstallSelectedCommand { get; }
     public ObservableCollection<AppxPackage> AppxPackages { get; } = new();
+
+    public BloatwareRemovalViewModel()
+    {
+        UninstallSelectedCommand = new AsyncRelayCommand(UninstallSelectedAsync, CanUninstall);
+    }
 
     public async Task LoadPackagesAsync()
     {
@@ -39,7 +48,7 @@ public class BloatwareRemovalViewModel : ObservableObject
         AppxPackages.Clear();
 
         var packages = await PowerShellService.GetAppxPackagesAsync();
-        
+
         packages.Sort((x, y) => string.Compare(x.Name, y.Name, System.StringComparison.Ordinal));
 
         foreach (var package in packages)
@@ -50,6 +59,27 @@ public class BloatwareRemovalViewModel : ObservableObject
 
         IsLoading = false;
         UpdateIsAllSelectedState();
+        (UninstallSelectedCommand as AsyncRelayCommand)?.RaiseCanExecuteChanged();
+    }
+
+    private bool CanUninstall()
+    {
+        return AppxPackages.Any(p => p.IsSelected);
+    }
+
+    private async Task UninstallSelectedAsync()
+    {
+        var selectedPackages = AppxPackages.Where(p => p.IsSelected).ToList();
+        if (!selectedPackages.Any()) return;
+
+        IsLoading = true; // Reuse IsLoading to show activity and disable the list
+
+        foreach (var package in selectedPackages)
+        {
+            await PowerShellService.RemoveAppxPackageAsync(package.PackageFullName);
+        }
+
+        await LoadPackagesAsync(); // This will set IsLoading to false
     }
 
     private void SelectAll(bool select)
@@ -64,6 +94,7 @@ public class BloatwareRemovalViewModel : ObservableObject
     {
         if (e.PropertyName == nameof(AppxPackage.IsSelected))
         {
+            (UninstallSelectedCommand as AsyncRelayCommand)?.RaiseCanExecuteChanged();
             UpdateIsAllSelectedState();
         }
     }

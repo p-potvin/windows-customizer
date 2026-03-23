@@ -50,6 +50,14 @@
         "net8.0-windows10.0.19041": {
           "targetAlias": "net8.0-windows10.0.19041.0",
           "dependencies": {
+            "Microsoft.Extensions.FileProviders.Abstractions": {
+              "target": "Package",
+              "version": "[11.0.0-preview.2.26159.112, )"
+            },
+            "Microsoft.Extensions.FileSystemGlobbing": {
+              "target": "Package",
+              "version": "[11.0.0-preview.2.26159.112, )"
+            },
             "Microsoft.Windows.SDK.BuildTools": {
               "target": "Package",
               "version": "[10.0.22621.3233, )"
@@ -57,6 +65,18 @@
             "Microsoft.WindowsAppSDK": {
               "target": "Package",
               "version": "[1.5.240311000, )"
+            },
+            "System.IO.FileSystem": {
+              "target": "Package",
+              "version": "[4.3.0, )"
+            },
+            "System.IO.FileSystem.Primitives": {
+              "target": "Package",
+              "version": "[4.3.0, )"
+            },
+            "System.Management": {
+              "target": "Package",
+              "version": "[11.0.0-preview.2.26159.112, )"
             }
           },
           "imports": [

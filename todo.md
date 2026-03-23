@@ -6,8 +6,8 @@
  #2 
  - Bloatware Removal Module: Develop functionality to identify and remove unnecessary default Windows programs, services, and startup
    applications.
-   - [x] Implement UI to list installed AppX packages with checkboxes.
-   - [ ] Implement `Remove-AppxPackage` functionality.
+   - [x] Implement UI to list installed AppX packages.
+   - [x] Implement `Remove-AppxPackage` functionality.
    - [ ] Implement service and startup program management.
  #3 
  - Essential Program Installation Module: Enable the installation of a curated list of essential programs, particularly useful
