@@ -13,7 +13,6 @@
                         IsSettingsVisible="True"
                         PaneTitle="Windows Customizer"
                         IsPaneToggleButtonVisible="True"
-                        PaneBackground="{ThemeResource NavigationViewPaneBackground}"
                         ItemInvoked="NavView_ItemInvoked"
                         Loaded="NavView_Loaded">
             <NavigationView.MenuItems>

@@ -4,9 +4,54 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d">
+    xmlns:models="using:WindowsCustomizer.Models"
+    mc:Ignorable="d"
+    Background="Transparent">
 
     <Grid>
-        <TextBlock Text="Explorer Customization Module" Style="{StaticResource HeaderTextBlockStyle}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0" Margin="0,0,0,12">
+            <TextBlock Text="Windows Explorer" Style="{ThemeResource TitleTextBlockStyle}" />
+            <TextBlock
+                Text="Customize various aspects of explorer.exe, folder/file visibility, and context menus."
+                Style="{ThemeResource BodyTextBlockStyle}" TextWrapping="Wrap" />
+        </StackPanel>
+
+        <ListView
+            Grid.Row="1"
+            ItemsSource="{x:Bind ViewModel.Settings}"
+            SelectionMode="None">
+            <ListView.ItemTemplate>
+                <DataTemplate x:DataType="models:ExplorerSetting">
+                    <Grid Padding="12,8">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                            <TextBlock Text="{x:Bind Name}" FontWeight="SemiBold" />
+                            <TextBlock Text="{x:Bind Description}" FontSize="12" Opacity="0.7" TextWrapping="Wrap" />
+                        </StackPanel>
+                        <ToggleSwitch Grid.Column="1" IsOn="{x:Bind IsEnabled, Mode=TwoWay}"
+                                      VerticalAlignment="Center" Margin="12,0,0,0" />
+                    </Grid>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+
+        <ProgressRing Grid.Row="1" IsActive="{x:Bind ViewModel.IsLoading, Mode=OneWay}" Width="50" Height="50"
+                      HorizontalAlignment="Center" VerticalAlignment="Center" />
+
+        <Button Grid.Row="2"
+                Content="Apply Explorer Changes"
+                HorizontalAlignment="Right"
+                Margin="0,12,0,0"
+                Command="{x:Bind ViewModel.ApplyChangesCommand}"
+                Style="{ThemeResource AccentButtonStyle}" />
     </Grid>
 </Page>

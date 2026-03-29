@@ -11,63 +11,14 @@ namespace WindowsCustomizer
 {
     public sealed partial class MainWindow : Window
     {
-        private MicaController _micaController;
-        private SystemBackdropConfiguration _backdropConfiguration;
-
         public MainWindow()
         {
             this.InitializeComponent();
             Title = "Windows Customizer";
             ExtendsContentIntoTitleBar = true;
             SetTitleBar(NavView); // Use NavView as title bar
-            TrySetMicaBackdrop();
-        }
 
-        private bool TrySetMicaBackdrop()
-        {
-            if (MicaController.IsSupported())
-            {
-                _micaController = new MicaController();
-                _backdropConfiguration = new SystemBackdropConfiguration();
-
-                // Hook up the theme change event
-                ((FrameworkElement)this.Content).ActualThemeChanged += (s, e) =>
-                {
-                    if (_backdropConfiguration != null)
-                    {
-                        SetBackdropTheme();
-                    }
-                };
-
-                // Initial theme setup
-                SetBackdropTheme();
-
-                _micaController.SetSystemBackdropConfiguration(_backdropConfiguration);
-                _micaController.AddSystemBackdropTarget(this.As<ICompositionSupportsSystemBackdrop>());
-
-                // Make the window transparent
-                ((FrameworkElement)this.Content).Background = new SolidColorBrush(Colors.Transparent);
-                
-                return true;
-            }
-
-            return false; // Mica is not supported on this system
-        }
-
-        private void SetBackdropTheme()
-        {
-            switch (((FrameworkElement)this.Content).ActualTheme)
-            {
-                case ElementTheme.Dark:
-                    _backdropConfiguration.Theme = SystemBackdropTheme.Dark;
-                    break;
-                case ElementTheme.Light:
-                    _backdropConfiguration.Theme = SystemBackdropTheme.Light;
-                    break;
-                case ElementTheme.Default:
-                    _backdropConfiguration.Theme = SystemBackdropTheme.Default;
-                    break;
-            }
+            this.SystemBackdrop = new MicaBackdrop();
         }
 
         private void NavView_Loaded(object sender, RoutedEventArgs e)
@@ -98,6 +49,9 @@ namespace WindowsCustomizer
                     break;
                 case "bloatware":
                     pageType = typeof(Views.BloatwareRemovalPage);
+                    break;
+                case "installer":
+                    pageType = typeof(Views.EssentialsPage);
                     break;
                 // Add other specific pages here if they exist
                 // case "installer":

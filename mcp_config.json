@@ -1,0 +1,77 @@
+{
+    "mcpServers": {
+        "cloud-sql-postgresql-admin": {
+            "args": [
+                "-y",
+                "@toolbox-sdk/server@>=0.26.0",
+                "--prebuilt",
+                "cloud-sql-postgres-admin",
+                "--stdio",
+                "--user-agent-metadata",
+                "antigravity"
+            ],
+            "command": "npx"
+        },
+        "cloudrun": {
+            "args": [
+                "-y",
+                "@google-cloud/cloud-run-mcp"
+            ],
+            "command": "npx"
+        },
+        "dataplex": {
+            "args": [
+                "-y",
+                "@toolbox-sdk/server@>=0.26.0",
+                "--prebuilt",
+                "dataplex",
+                "--stdio",
+                "--user-agent-metadata",
+                "antigravity"
+            ],
+            "command": "npx",
+            "env": {
+                "DATAPLEX_PROJECT": "vaultwares"
+            }
+        },
+        "fetch": {
+            "args": [
+                "-y",
+                "@modelcontextprotocol/server-fetch"
+            ],
+            "command": "npx"
+        },
+        "firebase-mcp-server": {
+            "args": [
+                "-y",
+                "firebase-tools@latest",
+                "mcp"
+            ],
+            "command": "npx"
+        },
+        "mcp-toolbox-for-databases": {
+            "args": [
+                "-y",
+                "@toolbox-sdk/server@>=0.26.0",
+                "--stdio",
+                "--user-agent-metadata",
+                "antigravity"
+            ],
+            "command": "npx"
+        },
+        "remote-github": {
+            "headers": {
+                "Authorization": "env:GITHUB_TOKEN",
+                "Content-Type": "application/json"
+            },
+            "serverUrl": "https://api.githubcopilot.com/mcp/"
+        },
+        "sequential-thinking": {
+            "args": [
+                "-y",
+                "@modelcontextprotocol/server-sequential-thinking"
+            ],
+            "command": "npx"
+        }
+    }
+}

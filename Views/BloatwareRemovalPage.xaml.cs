@@ -17,7 +17,7 @@ namespace WindowsCustomizer.Views
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
-            await ViewModel.LoadPackagesAsync();
+            await ViewModel.LoadAllAsync();
         }
     }
 }

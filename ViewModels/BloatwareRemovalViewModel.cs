@@ -20,92 +20,132 @@ public class BloatwareRemovalViewModel : ObservableObject
 
     private bool? _isAllSelected = false;
 
-    public bool? IsAllSelected
+    public bool? _isAllSelectedAppx = false;
+    public bool? IsAllSelectedAppx
     {
-        get => _isAllSelected;
+        get => _isAllSelectedAppx;
         set
         {
-            if (SetProperty(ref _isAllSelected, value) && _isAllSelected.HasValue)
+            if (SetProperty(ref _isAllSelectedAppx, value) && _isAllSelectedAppx.HasValue)
             {
-                SelectAll(_isAllSelected.Value);
+                SelectAllAppx(_isAllSelectedAppx.Value);
             }
         }
     }
 
-    public ICommand UninstallSelectedCommand { get; }
     public ObservableCollection<AppxPackage> AppxPackages { get; } = new();
+    public ObservableCollection<ServicePackage> Services { get; } = new();
+    public ObservableCollection<StartupPackage> StartupItems { get; } = new();
+
+    public ICommand UninstallSelectedCommand { get; }
+    public ICommand DisableSelectedServicesCommand { get; }
+    public ICommand RemoveSelectedStartupCommand { get; }
 
     public BloatwareRemovalViewModel()
     {
-        UninstallSelectedCommand = new AsyncRelayCommand(UninstallSelectedAsync, CanUninstall);
+        UninstallSelectedCommand = new AsyncRelayCommand(UninstallSelectedAsync, () => AppxPackages.Any(p => p.IsSelected));
+        DisableSelectedServicesCommand = new AsyncRelayCommand(DisableSelectedServicesAsync, () => Services.Any(p => p.IsSelected));
+        RemoveSelectedStartupCommand = new AsyncRelayCommand(RemoveSelectedStartupAsync, () => StartupItems.Any(p => p.IsSelected));
     }
 
-    public async Task LoadPackagesAsync()
+    public async Task LoadAllAsync()
     {
         if (IsLoading) return;
-
         IsLoading = true;
-        AppxPackages.Clear();
 
-        var packages = await PowerShellService.GetAppxPackagesAsync();
-
-        packages.Sort((x, y) => string.Compare(x.Name, y.Name, System.StringComparison.Ordinal));
-
-        foreach (var package in packages)
-        {
-            package.PropertyChanged += OnPackageSelectionChanged;
-            AppxPackages.Add(package);
-        }
+        await Task.WhenAll(LoadPackagesAsync(), LoadServicesAsync(), LoadStartupAsync());
 
         IsLoading = false;
-        UpdateIsAllSelectedState();
-        (UninstallSelectedCommand as AsyncRelayCommand)?.RaiseCanExecuteChanged();
     }
 
-    private bool CanUninstall()
+    private async Task LoadPackagesAsync()
     {
-        return AppxPackages.Any(p => p.IsSelected);
+        AppxPackages.Clear();
+        var packages = await PowerShellService.GetAppxPackagesAsync();
+        packages.Sort((x, y) => string.Compare(x.Name, y.Name, System.StringComparison.Ordinal));
+        foreach (var package in packages)
+        {
+            package.PropertyChanged += (s, e) => { if (e.PropertyName == nameof(AppxPackage.IsSelected)) UpdateAppxSelection(); };
+            AppxPackages.Add(package);
+        }
+    }
+
+    private async Task LoadServicesAsync()
+    {
+        Services.Clear();
+        var services = await PowerShellService.GetServicesAsync();
+        services = services.OrderBy(s => s.DisplayName).ToList();
+        foreach (var service in services)
+        {
+            service.PropertyChanged += (s, e) => { if (e.PropertyName == nameof(ServicePackage.IsSelected)) (DisableSelectedServicesCommand as AsyncRelayCommand)?.RaiseCanExecuteChanged(); };
+            Services.Add(service);
+        }
+    }
+
+    private async Task LoadStartupAsync()
+    {
+        StartupItems.Clear();
+        var startup = await PowerShellService.GetStartupPackagesAsync();
+        foreach (var item in startup)
+        {
+            item.PropertyChanged += (s, e) => { if (e.PropertyName == nameof(StartupPackage.IsSelected)) (RemoveSelectedStartupCommand as AsyncRelayCommand)?.RaiseCanExecuteChanged(); };
+            StartupItems.Add(item);
+        }
     }
 
     private async Task UninstallSelectedAsync()
     {
-        var selectedPackages = AppxPackages.Where(p => p.IsSelected).ToList();
-        if (!selectedPackages.Any()) return;
+        var selected = AppxPackages.Where(p => p.IsSelected).ToList();
+        if (!selected.Any()) return;
 
-        IsLoading = true; // Reuse IsLoading to show activity and disable the list
-
-        foreach (var package in selectedPackages)
+        IsLoading = true;
+        foreach (var package in selected)
         {
             await PowerShellService.RemoveAppxPackageAsync(package.PackageFullName);
         }
-
-        await LoadPackagesAsync(); // This will set IsLoading to false
+        await LoadPackagesAsync();
+        IsLoading = false;
     }
 
-    private void SelectAll(bool select)
+    private async Task DisableSelectedServicesAsync()
     {
-        foreach (var package in AppxPackages)
+        var selected = Services.Where(p => p.IsSelected).ToList();
+        if (!selected.Any()) return;
+
+        IsLoading = true;
+        foreach (var service in selected)
         {
-            package.IsSelected = select;
+            await PowerShellService.SetServiceStartTypeAsync(service.Name, "Disabled");
         }
+        await LoadServicesAsync();
+        IsLoading = false;
     }
 
-    private void OnPackageSelectionChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+    private async Task RemoveSelectedStartupAsync()
     {
-        if (e.PropertyName == nameof(AppxPackage.IsSelected))
+        var selected = StartupItems.Where(p => p.IsSelected).ToList();
+        if (!selected.Any()) return;
+
+        IsLoading = true;
+        foreach (var item in selected)
         {
-            (UninstallSelectedCommand as AsyncRelayCommand)?.RaiseCanExecuteChanged();
-            UpdateIsAllSelectedState();
+            await PowerShellService.DisableStartupPackageAsync(item.Name, item.Location);
         }
+        await LoadStartupAsync();
+        IsLoading = false;
     }
 
-    private void UpdateIsAllSelectedState()
+    private void SelectAllAppx(bool select)
     {
+        foreach (var package in AppxPackages) package.IsSelected = select;
+    }
+
+    private void UpdateAppxSelection()
+    {
+        (UninstallSelectedCommand as AsyncRelayCommand)?.RaiseCanExecuteChanged();
         bool allSelected = AppxPackages.Any() && AppxPackages.All(p => p.IsSelected);
         bool noneSelected = !AppxPackages.Any() || AppxPackages.All(p => !p.IsSelected);
-
-        // Use a backing field to prevent re-entrancy from the setter
-        _isAllSelected = allSelected ? true : (noneSelected ? false : null);
-        OnPropertyChanged(nameof(IsAllSelected));
+        _isAllSelectedAppx = allSelected ? true : (noneSelected ? false : null);
+        OnPropertyChanged(nameof(IsAllSelectedAppx));
     }
 }
