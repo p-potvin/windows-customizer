@@ -1,0 +1,7 @@
+  Determining projects to restore...
+  All projects are up-to-date for restore.
+  WindowsCustomizer.Tests -> C:\Users\Administrator\Desktop\Github Repos\Projects\windows-customizer\WindowsCustomizer.Tests\bin\Debug\net8.0-windows10.0.19041.0\win-x64\WindowsCustomizer.Tests.dll
+Test run for C:\Users\Administrator\Desktop\Github Repos\Projects\windows-customizer\WindowsCustomizer.Tests\bin\Debug\net8.0-windows10.0.19041.0\win-x64\WindowsCustomizer.Tests.dll (.NETCoreApp,Version=v8.0)
+A total of 1 test files matched the specified pattern.
+
+Passed!  - Failed:     0, Passed:     5, Skipped:     0, Total:     5, Duration: 17 ms - WindowsCustomizer.Tests.dll (net8.0)

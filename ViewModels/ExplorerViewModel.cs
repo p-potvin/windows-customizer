@@ -67,6 +67,24 @@ public class ExplorerViewModel : ObservableObject
                 RegistryValue = "ShowSyncNotifications",
                 EnabledValue = 0,
                 DisabledValue = 1
+            },
+            new ExplorerSetting
+            {
+                Name = "Hide Libraries from Sidebar",
+                Description = "Removes the Libraries icon from the navigation pane.",
+                RegistryKey = @"Software\Classes\CLSID\{031E4825-7B94-4dc3-B131-E946B44C8DD5}",
+                RegistryValue = "System.IsPinnedToNameSpaceTree",
+                EnabledValue = 0,
+                DisabledValue = 1
+            },
+            new ExplorerSetting
+            {
+                Name = "Hide Gallery from Sidebar",
+                Description = "Removes the Gallery icon from the Windows 11 navigation pane.",
+                RegistryKey = @"Software\Classes\CLSID\{e88865ea-0e1c-4e20-9aa6-edcd0212c87c}",
+                RegistryValue = "System.IsPinnedToNameSpaceTree",
+                EnabledValue = 0,
+                DisabledValue = 1
             }
         };
 

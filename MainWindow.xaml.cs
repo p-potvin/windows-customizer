@@ -53,10 +53,15 @@ namespace WindowsCustomizer
                 case "installer":
                     pageType = typeof(Views.EssentialsPage);
                     break;
-                // Add other specific pages here if they exist
-                // case "installer":
-                //     pageType = typeof(Views.InstallerPage);
-                //     break;
+                case "explorer":
+                    pageType = typeof(Views.ExplorerPage);
+                    break;
+                case "search":
+                    pageType = typeof(Views.SearchPage);
+                    break;
+                case "services":
+                    pageType = typeof(Views.InvasiveServicesPage);
+                    break;
                 default:
                     pageType = typeof(Views.PlaceholderPage);
                     break;
