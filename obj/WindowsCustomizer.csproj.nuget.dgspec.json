@@ -52,11 +52,11 @@
           "dependencies": {
             "Microsoft.Extensions.FileProviders.Abstractions": {
               "target": "Package",
-              "version": "[11.0.0-preview.2.26159.112, )"
+              "version": "[8.0.0, )"
             },
             "Microsoft.Extensions.FileSystemGlobbing": {
               "target": "Package",
-              "version": "[11.0.0-preview.2.26159.112, )"
+              "version": "[8.0.0, )"
             },
             "Microsoft.PowerShell.SDK": {
               "target": "Package",
@@ -69,14 +69,6 @@
             "Microsoft.WindowsAppSDK": {
               "target": "Package",
               "version": "[1.5.240311000, )"
-            },
-            "System.IO.FileSystem": {
-              "target": "Package",
-              "version": "[4.3.0, )"
-            },
-            "System.IO.FileSystem.Primitives": {
-              "target": "Package",
-              "version": "[4.3.0, )"
             }
           },
           "imports": [

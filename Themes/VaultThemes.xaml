@@ -1,0 +1,16 @@
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- Cyberpunk Cinder Theme (Dark) -->
+    <Color x:Key="VaultPrimaryColor">#073642</Color>
+    <Color x:Key="VaultAccentColor">#CB4B16</Color>
+
+    <SolidColorBrush x:Key="VaultPrimaryBrush" Color="{StaticResource VaultPrimaryColor}" />
+    <SolidColorBrush x:Key="VaultAccentBrush" Color="{StaticResource VaultAccentColor}" />
+
+    <!-- Overlays for Glass/Mica Effects -->
+    <SolidColorBrush x:Key="VaultGlassBrush" Color="{StaticResource VaultPrimaryColor}" Opacity="0.6" />
+    <SolidColorBrush x:Key="VaultNavigationViewBackground" Color="#80000000" />
+
+</ResourceDictionary>

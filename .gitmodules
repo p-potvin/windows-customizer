@@ -1,0 +1,6 @@
+[submodule "bin/Debug/net8.0-windows10.0.19041.0/win-x64/vault-themes-submodule"]
+	path = bin/Debug/net8.0-windows10.0.19041.0/win-x64/vault-themes-submodule
+	url = https://github.com/p-potvin/vault-themes
+[submodule "External/VaultThemes"]
+	path = External/VaultThemes
+	url = https://github.com/p-potvin/vault-themes

@@ -7,7 +7,16 @@
     mc:Ignorable="d"
     Background="Transparent">
 
-    <Grid>
-        <TextBlock Text="Settings Page" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+    <Grid Padding="24">
+        <StackPanel Spacing="12">
+            <TextBlock Text="Settings" Style="{StaticResource HeaderTextBlockStyle}"/>
+            
+            <TextBlock Text="Theme Selection" Style="{StaticResource SubheaderTextBlockStyle}" Margin="0,12,0,0"/>
+            <ComboBox x:Name="ThemeSelector" 
+                      Header="Choose a Vault Theme"
+                      Width="300" 
+                      DisplayMemberPath="Name"
+                      SelectionChanged="ThemeSelector_SelectionChanged"/>
+        </StackPanel>
     </Grid>
 </Page>
