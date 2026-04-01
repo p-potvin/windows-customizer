@@ -9,9 +9,9 @@
 
     <Grid Padding="24">
         <StackPanel Spacing="12">
-            <TextBlock Text="Settings" Style="{StaticResource HeaderTextBlockStyle}"/>
+            <TextBlock Text="Settings" Style="{ThemeResource TitleTextBlockStyle}"/>
             
-            <TextBlock Text="Theme Selection" Style="{StaticResource SubheaderTextBlockStyle}" Margin="0,12,0,0"/>
+            <TextBlock Text="Theme Selection" Style="{ThemeResource SubtitleTextBlockStyle}" Margin="0,12,0,0"/>
             <ComboBox x:Name="ThemeSelector" 
                       Header="Choose a Vault Theme"
                       Width="300" 

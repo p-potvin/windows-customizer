@@ -49,6 +49,42 @@ public static class PowerShellService
         return packages;
     }
 
+    public static async Task<bool> RemoveAppxPackagesAsync(IEnumerable<string> packageFullNames)
+    {
+        bool allSuccess = true;
+        await Task.Run(() =>
+        {
+            using PowerShell ps = PowerShell.Create();
+            foreach (var packageFullName in packageFullNames)
+            {
+                ps.Commands.Clear();
+                ps.AddCommand("Remove-AppxPackage");
+                ps.AddParameter("Package", packageFullName);
+                ps.AddParameter("AllUsers");
+
+                try
+                {
+                    ps.Invoke();
+                    if (ps.HadErrors)
+                    {
+                        foreach (var error in ps.Streams.Error)
+                        {
+                            System.Diagnostics.Debug.WriteLine($"PowerShell Error removing {packageFullName}: {error}");
+                        }
+                        ps.Streams.Error.Clear();
+                        allSuccess = false;
+                    }
+                }
+                catch (Exception ex) 
+                { 
+                    System.Diagnostics.Debug.WriteLine($"PowerShell Exception removing {packageFullName}: {ex.Message}"); 
+                    allSuccess = false;
+                }
+            }
+        });
+        return allSuccess;
+    }
+
     public static async Task<bool> RemoveAppxPackageAsync(string packageFullName)
     {
         bool success = false;
@@ -111,6 +147,34 @@ public static class PowerShellService
         return services;
     }
 
+    public static async Task<bool> SetServiceStartTypesAsync(IEnumerable<string> names, string startType)
+    {
+        bool allSuccess = true;
+        await Task.Run(() =>
+        {
+            using PowerShell ps = PowerShell.Create();
+            foreach (var name in names)
+            {
+                ps.Commands.Clear();
+                ps.AddCommand("Set-Service");
+                ps.AddParameter("Name", name);
+                ps.AddParameter("StartupType", startType);
+
+                try
+                {
+                    ps.Invoke();
+                    if (ps.HadErrors)
+                    {
+                        ps.Streams.Error.Clear();
+                        allSuccess = false;
+                    }
+                }
+                catch (Exception) { allSuccess = false; }
+            }
+        });
+        return allSuccess;
+    }
+
     public static async Task<bool> SetServiceStartTypeAsync(string name, string startType)
     {
         bool success = false;
@@ -159,6 +223,46 @@ public static class PowerShellService
         });
 
         return startupItems;
+    }
+
+    public static async Task<bool> DisableStartupPackagesAsync(IEnumerable<StartupPackage> items)
+    {
+        bool allSuccess = true;
+        await Task.Run(() =>
+        {
+            using PowerShell ps = PowerShell.Create();
+            foreach (var item in items)
+            {
+                ps.Commands.Clear();
+                string script = "";
+                if (item.Location.StartsWith("HKLM", StringComparison.OrdinalIgnoreCase))
+                {
+                    script = $"Remove-ItemProperty -Path 'Registry::{item.Location}' -Name '{item.Name}' -ErrorAction SilentlyContinue";
+                }
+                else if (item.Location.StartsWith("Startup", StringComparison.OrdinalIgnoreCase))
+                {
+                    script = $"Get-ChildItem -Path $env:APPDATA\\Microsoft\\Windows\\'Start Menu'\\Programs\\Startup | Where-Object {{ $_.Name -like '*{item.Name}*' }} | Remove-Item -ErrorAction SilentlyContinue";
+                }
+                else
+                {
+                    script = $"Remove-ItemProperty -Path 'Registry::{item.Location}' -Name '{item.Name}' -ErrorAction SilentlyContinue";
+                }
+
+                ps.AddScript(script);
+
+                try
+                {
+                    ps.Invoke();
+                    if (ps.HadErrors)
+                    {
+                        ps.Streams.Error.Clear();
+                        allSuccess = false;
+                    }
+                }
+                catch (Exception) { allSuccess = false; }
+            }
+        });
+        return allSuccess;
     }
 
     public static async Task<bool> DisableStartupPackageAsync(string name, string location)

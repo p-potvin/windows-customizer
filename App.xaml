@@ -7,8 +7,8 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <XamlControlsResources xmlns="using:Microsoft.UI.Xaml.Controls" />
-                <ResourceDictionary Source="Theme.xaml"/>
-                <ResourceDictionary Source="Themes/VaultThemes.xaml"/>
+                <ResourceDictionary Source="ms-appx:///Theme.xaml"/>
+                <ResourceDictionary Source="ms-appx:///Themes/VaultThemes.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

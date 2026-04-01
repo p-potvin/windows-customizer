@@ -9,6 +9,10 @@
     <SolidColorBrush x:Key="VaultPrimaryBrush" Color="{StaticResource VaultPrimaryColor}" />
     <SolidColorBrush x:Key="VaultAccentBrush" Color="{StaticResource VaultAccentColor}" />
 
+    <!-- App-wide SystemAccentColor overrides for Vault integration -->
+    <Color x:Key="VaultSystemAccentColor">#CB4B16</Color>
+    <SolidColorBrush x:Key="SystemAccentColorBrush" Color="{StaticResource VaultSystemAccentColor}"/>
+
     <!-- Overlays for Glass/Mica Effects -->
     <SolidColorBrush x:Key="VaultGlassBrush" Color="{StaticResource VaultPrimaryColor}" Opacity="0.6" />
     <SolidColorBrush x:Key="VaultNavigationViewBackground" Color="#80000000" />

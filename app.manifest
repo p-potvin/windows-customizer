@@ -5,8 +5,8 @@
   <trustInfo xmlns="urn:schemas-microsoft-com:asm.v2">
     <security>
       <requestedPrivileges xmlns="urn:schemas-microsoft-com:asm.v3">
-        <!-- The application is designed to modify system-level settings, so it requires administrator privileges -->
-        <requestedExecutionLevel level="requireAdministrator" uiAccess="false" />
+        <!-- WinUI 3 unpackaged apps fail to launch silently if this is set to requireAdministrator. We will elevate via code when needed. -->
+        <requestedExecutionLevel level="asInvoker" uiAccess="false" />
       </requestedPrivileges>
     </security>
   </trustInfo>

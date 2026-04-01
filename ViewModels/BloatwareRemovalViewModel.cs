@@ -18,17 +18,21 @@ public class BloatwareRemovalViewModel : ObservableObject
         set => SetProperty(ref _isLoading, value);
     }
 
-    private bool? _isAllSelected = false;
-
-    public bool? _isAllSelectedAppx = false;
     public bool? IsAllSelectedAppx
     {
-        get => _isAllSelectedAppx;
+        get
+        {
+            if (!AppxPackages.Any()) return false;
+            if (AppxPackages.All(p => p.IsSelected)) return true;
+            if (AppxPackages.All(p => !p.IsSelected)) return false;
+            return null;
+        }
         set
         {
-            if (SetProperty(ref _isAllSelectedAppx, value) && _isAllSelectedAppx.HasValue)
+            if (value.HasValue)
             {
-                SelectAllAppx(_isAllSelectedAppx.Value);
+                SelectAllAppx(value.Value);
+                OnPropertyChanged();
             }
         }
     }
@@ -99,10 +103,8 @@ public class BloatwareRemovalViewModel : ObservableObject
         if (!selected.Any()) return;
 
         IsLoading = true;
-        foreach (var package in selected)
-        {
-            await PowerShellService.RemoveAppxPackageAsync(package.PackageFullName);
-        }
+        var packageNames = selected.Select(p => p.PackageFullName).ToList();
+        await PowerShellService.RemoveAppxPackagesAsync(packageNames);
         await LoadPackagesAsync();
         IsLoading = false;
     }
@@ -113,10 +115,8 @@ public class BloatwareRemovalViewModel : ObservableObject
         if (!selected.Any()) return;
 
         IsLoading = true;
-        foreach (var service in selected)
-        {
-            await PowerShellService.SetServiceStartTypeAsync(service.Name, "Disabled");
-        }
+        var serviceNames = selected.Select(s => s.Name).ToList();
+        await PowerShellService.SetServiceStartTypesAsync(serviceNames, "Disabled");
         await LoadServicesAsync();
         IsLoading = false;
     }
@@ -127,10 +127,7 @@ public class BloatwareRemovalViewModel : ObservableObject
         if (!selected.Any()) return;
 
         IsLoading = true;
-        foreach (var item in selected)
-        {
-            await PowerShellService.DisableStartupPackageAsync(item.Name, item.Location);
-        }
+        await PowerShellService.DisableStartupPackagesAsync(selected);
         await LoadStartupAsync();
         IsLoading = false;
     }
@@ -143,9 +140,6 @@ public class BloatwareRemovalViewModel : ObservableObject
     private void UpdateAppxSelection()
     {
         (UninstallSelectedCommand as AsyncRelayCommand)?.RaiseCanExecuteChanged();
-        bool allSelected = AppxPackages.Any() && AppxPackages.All(p => p.IsSelected);
-        bool noneSelected = !AppxPackages.Any() || AppxPackages.All(p => !p.IsSelected);
-        _isAllSelectedAppx = allSelected ? true : (noneSelected ? false : null);
         OnPropertyChanged(nameof(IsAllSelectedAppx));
     }
 }

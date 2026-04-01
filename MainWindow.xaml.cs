@@ -16,9 +16,16 @@ namespace WindowsCustomizer
             this.InitializeComponent();
             Title = "Windows Customizer";
             ExtendsContentIntoTitleBar = true;
-            SetTitleBar(NavView); // Use NavView as title bar
+            SetTitleBar(AppTitleBar); // Use dedicated Title Bar grid
 
-            this.SystemBackdrop = new MicaBackdrop();
+            try
+            {
+                this.SystemBackdrop = new MicaBackdrop();
+            }
+            catch
+            {
+                // Fallback if Mica is not supported
+            }
         }
 
         private void NavView_Loaded(object sender, RoutedEventArgs e)

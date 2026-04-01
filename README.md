@@ -47,16 +47,16 @@ dotnet restore
 
 ### 3. Build the Solution
 ```powershell
-dotnet build WindowsCustomizer.sln
+dotnet build WindowsCustomizer.csproj -r win-x64
 ```
 
 ### 4. Run the Application
-You can run the project directly from Visual Studio by selecting `WindowsCustomizer (Package)` as the startup project and pressing F5.
-
-Alternatively, from the CLI:
+From the CLI:
 ```powershell
-dotnet run --project WindowsCustomizer.csproj
+dotnet run --project WindowsCustomizer.csproj -r win-x64 --no-build
 ```
+
+You can also run the project directly from Visual Studio by selecting `x64` as the platform.
 
 ## Testing
 The project uses xUnit for unit testing. To run tests:

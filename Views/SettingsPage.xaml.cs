@@ -30,26 +30,26 @@ namespace WindowsCustomizer.Views
         {
             if (ThemeSelector.SelectedItem is VaultTheme theme)
             {
-                Application.Current.Resources["VaultPrimaryColor"] = theme.Primary;
-                Application.Current.Resources["VaultAccentColor"] = theme.Accent;
+                var res = Application.Current.Resources;
+                res["VaultPrimaryColor"] = theme.Primary;
+                res["VaultAccentColor"] = theme.Accent;
+                res["SystemAccentColor"] = theme.Accent;
                 
-                // Update brushes
-                if (Application.Current.Resources.ContainsKey("VaultPrimaryBrush") && 
-                    Application.Current.Resources["VaultPrimaryBrush"] is SolidColorBrush primaryBrush)
-                {
+                // Update brushes if they exist
+                if (res["VaultPrimaryBrush"] is SolidColorBrush primaryBrush)
                     primaryBrush.Color = theme.Primary;
-                }
                 
-                if (Application.Current.Resources.ContainsKey("VaultAccentBrush") && 
-                    Application.Current.Resources["VaultAccentBrush"] is SolidColorBrush accentBrush)
-                {
+                if (res["VaultAccentBrush"] is SolidColorBrush accentBrush)
                     accentBrush.Color = theme.Accent;
-                }
                 
-                // Request a theme change
-                if (this.XamlRoot?.Content is FrameworkElement fe)
+                if (res["SystemAccentColorBrush"] is SolidColorBrush systemAccentBrush)
+                    systemAccentBrush.Color = theme.Accent;
+
+                // Apply theme to the application resources Window level if possible, 
+                // but since we are in a Page, we should use the Window from the App class or XamlRoot.
+                if (this.XamlRoot?.Content is FrameworkElement rootElement)
                 {
-                    fe.RequestedTheme = theme.Mode == "dark" ? ElementTheme.Dark : ElementTheme.Light;
+                    rootElement.RequestedTheme = theme.Mode.ToLower() == "dark" ? ElementTheme.Dark : ElementTheme.Light;
                 }
             }
         }
