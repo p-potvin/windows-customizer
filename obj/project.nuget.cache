@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "Ht6yqrsrE3I=",
+  "dgSpecHash": "PjAduluzTPA=",
   "success": true,
-  "projectFilePath": "C:\\Users\\Administrator\\Desktop\\Github Repos\\Projects\\windows-customizer\\WindowsCustomizer.csproj",
+  "projectFilePath": "c:\\Users\\Administrator\\Desktop\\Github Repos\\Projects\\windows-customizer\\WindowsCustomizer.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Administrator\\.nuget\\packages\\jetbrains.annotations\\2021.2.0\\jetbrains.annotations.2021.2.0.nupkg.sha512",
     "C:\\Users\\Administrator\\.nuget\\packages\\json.more.net\\1.9.3\\json.more.net.1.9.3.nupkg.sha512",
