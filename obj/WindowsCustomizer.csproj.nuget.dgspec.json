@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "c:\\Users\\Administrator\\Desktop\\Github Repos\\Projects\\windows-customizer\\WindowsCustomizer.csproj": {}
+    "C:\\Users\\Administrator\\Desktop\\Github Repos\\windows-customizer\\WindowsCustomizer.csproj": {}
   },
   "projects": {
-    "c:\\Users\\Administrator\\Desktop\\Github Repos\\Projects\\windows-customizer\\WindowsCustomizer.csproj": {
+    "C:\\Users\\Administrator\\Desktop\\Github Repos\\windows-customizer\\WindowsCustomizer.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "c:\\Users\\Administrator\\Desktop\\Github Repos\\Projects\\windows-customizer\\WindowsCustomizer.csproj",
+        "projectUniqueName": "C:\\Users\\Administrator\\Desktop\\Github Repos\\windows-customizer\\WindowsCustomizer.csproj",
         "projectName": "WindowsCustomizer",
-        "projectPath": "c:\\Users\\Administrator\\Desktop\\Github Repos\\Projects\\windows-customizer\\WindowsCustomizer.csproj",
+        "projectPath": "C:\\Users\\Administrator\\Desktop\\Github Repos\\windows-customizer\\WindowsCustomizer.csproj",
         "packagesPath": "C:\\Users\\Administrator\\.nuget\\packages\\",
-        "outputPath": "c:\\Users\\Administrator\\Desktop\\Github Repos\\Projects\\windows-customizer\\obj\\",
+        "outputPath": "C:\\Users\\Administrator\\Desktop\\Github Repos\\windows-customizer\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -58,6 +58,12 @@
               "target": "Package",
               "version": "[8.0.0, )"
             },
+            "Microsoft.NET.ILLink.Tasks": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[8.0.27, )",
+              "autoReferenced": true
+            },
             "Microsoft.PowerShell.SDK": {
               "target": "Package",
               "version": "[7.4.1, )"
@@ -85,11 +91,11 @@
           "downloadDependencies": [
             {
               "name": "Microsoft.AspNetCore.App.Runtime.win-x64",
-              "version": "[8.0.26, 8.0.26]"
+              "version": "[8.0.27, 8.0.27]"
             },
             {
               "name": "Microsoft.NETCore.App.Runtime.win-x64",
-              "version": "[8.0.26, 8.0.26]"
+              "version": "[8.0.27, 8.0.27]"
             },
             {
               "name": "Microsoft.Windows.SDK.NET.Ref",
@@ -97,7 +103,7 @@
             },
             {
               "name": "Microsoft.WindowsDesktop.App.Runtime.win-x64",
-              "version": "[8.0.26, 8.0.26]"
+              "version": "[8.0.27, 8.0.27]"
             }
           ],
           "frameworkReferences": {
@@ -108,7 +114,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.202/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.204/PortableRuntimeIdentifierGraph.json"
         }
       },
       "runtimes": {
