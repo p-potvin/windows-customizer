@@ -29,7 +29,8 @@
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
-          "net8.0-windows10.0.19041": {
+          "net8.0-windows10.0.19041.0": {
+            "framework": "net8.0-windows10.0.19041",
             "targetAlias": "net8.0-windows10.0.19041.0",
             "projectReferences": {}
           }
@@ -44,10 +45,11 @@
           "auditLevel": "low",
           "auditMode": "direct"
         },
-        "SdkAnalysisLevel": "10.0.200"
+        "SdkAnalysisLevel": "10.0.300"
       },
       "frameworks": {
-        "net8.0-windows10.0.19041": {
+        "net8.0-windows10.0.19041.0": {
+          "framework": "net8.0-windows10.0.19041",
           "targetAlias": "net8.0-windows10.0.19041.0",
           "dependencies": {
             "Microsoft.Extensions.FileProviders.Abstractions": {
@@ -57,12 +59,6 @@
             "Microsoft.Extensions.FileSystemGlobbing": {
               "target": "Package",
               "version": "[8.0.0, )"
-            },
-            "Microsoft.NET.ILLink.Tasks": {
-              "suppressParent": "All",
-              "target": "Package",
-              "version": "[8.0.27, )",
-              "autoReferenced": true
             },
             "Microsoft.PowerShell.SDK": {
               "target": "Package",
@@ -91,11 +87,11 @@
           "downloadDependencies": [
             {
               "name": "Microsoft.AspNetCore.App.Runtime.win-x64",
-              "version": "[8.0.27, 8.0.27]"
+              "version": "[8.0.28, 8.0.28]"
             },
             {
               "name": "Microsoft.NETCore.App.Runtime.win-x64",
-              "version": "[8.0.27, 8.0.27]"
+              "version": "[8.0.28, 8.0.28]"
             },
             {
               "name": "Microsoft.Windows.SDK.NET.Ref",
@@ -103,7 +99,7 @@
             },
             {
               "name": "Microsoft.WindowsDesktop.App.Runtime.win-x64",
-              "version": "[8.0.27, 8.0.27]"
+              "version": "[8.0.28, 8.0.28]"
             }
           ],
           "frameworkReferences": {
@@ -114,7 +110,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.204/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.301/PortableRuntimeIdentifierGraph.json"
         }
       },
       "runtimes": {
